@@ -1,0 +1,46 @@
+name: natfreecloud 自动签到
+
+on:
+  # 定时触发 - 每天北京时间上午8点（UTC时间0点）
+  schedule:
+    - cron: '0 0 * * *'
+  
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      user_id:
+        description: '用户ID（可选，留空使用默认UID）'
+        required: false
+        type: string
+
+jobs:
+  checkin:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 设置 Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: 安装依赖
+      run: npm install
+    
+    - name: 执行签到
+      env:
+        UID: ${{ secrets.UID }}
+        TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+        TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        MANUAL_USER_ID: ${{ github.event.inputs.user_id }}
+      run: node checkin.js
+    
+    - name: 上传日志
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: checkin-logs-${{ github.run_number }}
+        path: logs/
+        retention-days: 7
