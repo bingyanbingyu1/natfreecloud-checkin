@@ -1,0 +1,21 @@
+{
+  "name": "natfreecloud-checkin",
+  "version": "1.0.0",
+  "description": "natfreecloud 自动签到脚本",
+  "main": "checkin.js",
+  "scripts": {
+    "start": "node checkin.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "fs-extra": "^11.1.1"
+  },
+  "keywords": [
+    "natfreecloud",
+    "checkin",
+    "automation"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
